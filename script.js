@@ -587,6 +587,20 @@ SEARCH
 
 async function geocode(place) {
 
+    const url = "https://geocoding-api.open-meteo.com/v1/search?name=" + place + "&count=5&language=nl&format=json";
+
+    const res = await fetch(url);
+
+    const data = await res.json();
+
+    if (!data.results) throw new Error("Plaats niet gevonden");
+
+    return data.results;
+
+}
+
+async function geocodeSingle(place) {
+
     const url = "https://geocoding-api.open-meteo.com/v1/search?name=" + place + "&count=1&language=nl&format=json";
 
     const res = await fetch(url);
@@ -599,6 +613,103 @@ async function geocode(place) {
 
 }
 
+function getProvinceInitials(admin1) {
+    const provinceMap = {
+        "Groningen": "GR",
+        "Friesland": "FR", 
+        "Drenthe": "DR",
+        "Overijssel": "OV",
+        "Flevoland": "FL",
+        "Gelderland": "GE",
+        "Utrecht": "UT",
+        "Noord-Holland": "NH",
+        "Zuid-Holland": "ZH",
+        "Noord-Brabant": "NB",
+        "Zeeland": "ZE",
+        "Limburg": "LB"
+    };
+    
+    return provinceMap[admin1] || "";
+}
+
+function getLocationDisplay(result) {
+    const provinceInitials = getProvinceInitials(result.admin1);
+    const isNetherlands = result.country_code === "NL";
+    
+    if (isNetherlands && provinceInitials) {
+        return `${result.name} (${provinceInitials})`;
+    } else if (!isNetherlands) {
+        return `${result.name} (${result.country_code})`;
+    } else {
+        return result.name;
+    }
+}
+
+function showSuggestions(results) {
+    const suggestionsDiv = document.getElementById("suggestions");
+    
+    if (!results || results.length === 0) {
+        suggestionsDiv.style.display = "none";
+        return;
+    }
+
+    // Filter duplicates by name, keeping the first occurrence
+    const uniqueResults = [];
+    const seenNames = new Set();
+    
+    results.forEach(result => {
+        if (!seenNames.has(result.name)) {
+            seenNames.add(result.name);
+            uniqueResults.push(result);
+        }
+    });
+
+    suggestionsDiv.innerHTML = "";
+    
+    uniqueResults.forEach(result => {
+        const suggestion = document.createElement("div");
+        suggestion.className = "suggestion";
+        suggestion.textContent = getLocationDisplay(result);
+        
+        suggestion.onclick = function() {
+            document.getElementById("placeInput").value = result.name;
+            suggestionsDiv.style.display = "none";
+            
+            saveLocation(result.name, result.latitude, result.longitude);
+            loadWeather(result.latitude, result.longitude, result.name);
+        };
+        
+        suggestionsDiv.appendChild(suggestion);
+    });
+    
+    suggestionsDiv.style.display = "block";
+}
+
+function hideSuggestions() {
+    document.getElementById("suggestions").style.display = "none";
+}
+
+let debounceTimer;
+async function handleInput() {
+    const query = document.getElementById("placeInput").value.trim();
+    
+    clearTimeout(debounceTimer);
+    
+    if (query.length < 2) {
+        hideSuggestions();
+        return;
+    }
+    
+    debounceTimer = setTimeout(async () => {
+        try {
+            const results = await geocode(query);
+            showSuggestions(results);
+        } catch (error) {
+            hideSuggestions();
+        }
+    }, 300);
+}
+
 
 document.getElementById("locationForm").onsubmit = async function(e) {
     e.preventDefault();
@@ -607,7 +718,7 @@ document.getElementById("locationForm").onsubmit = async function(e) {
 
     if (!place) return;
 
-    const geo = await geocode(place);
+    const geo = await geocodeSingle(place);
 
     document.getElementById("placeInput").value = geo.name;
 
@@ -622,7 +733,7 @@ document.getElementById("searchBtn").onclick = async function() {
 
     if (!place) return;
 
-    const geo = await geocode(place);
+    const geo = await geocodeSingle(place);
 
     document.getElementById("placeInput").value = geo.name;
 
@@ -632,8 +743,15 @@ document.getElementById("searchBtn").onclick = async function() {
 
 };
 
-
 document.getElementById("geoBtn").onclick = getMyLocation;
+
+document.getElementById("placeInput").addEventListener("input", handleInput);
+
+document.addEventListener("click", function(e) {
+    if (!e.target.closest(".search-wrapper")) {
+        hideSuggestions();
+    }
+});
 
 
 /* -----------------------------
