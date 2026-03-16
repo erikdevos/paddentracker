@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paddentrek Radar</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app">
+
+    <h1>Paddentrek Radar</h1>
+
+    <form class="location" id="locationForm">
+
+        <label for="placeInput" class="visually-hidden">Plaats</label>
+
+        <div class="searchWrapper">
+
+        <input
+            id="placeInput"
+            type="text"
+            placeholder="Voer plaats in (bijv. Maastricht)"
+            autocomplete="off"
+        />
+
+        <div id="suggestions" class="suggestions"></div>
+
+        </div>
+
+        <button id="searchBtn" class="btn btn-primary" type="submit">
+        Zoek
+        </button>
+
+        <button id="geoBtn" class="btn btn-secondary" type="button">
+        Mijn locatie
+        </button>
+
+    </form>
+
+
+    <div class="card">
+
+        <div id="status" aria-live="polite">
+        Locatie ophalen...
+        </div>
+
+
+        <div class="conditions">
+
+        <div>
+            <span id="tempDot" class="dot"></span>
+            Temperatuur:
+            <span id="temp">-</span>
+            <span class="ideal">(Ideaal: 7–12°C)</span>
+        </div>
+
+        <div>
+            <span id="feelsDot" class="dot"></span>
+            Gevoelstemperatuur:
+            <span id="feels">-</span>
+            <span class="ideal">(Minimaal: ±6°C)</span>
+        </div>
+
+        <div>
+            <span id="humidityDot" class="dot"></span>
+            Luchtvochtigheid:
+            <span id="humidity">-</span>
+            <span class="ideal">(Ideaal: >70%)</span>
+        </div>
+
+        <div>
+            <span id="rainDot" class="dot"></span>
+            Regen:
+            <span id="rain">-</span>
+            <span class="ideal">(Lichte regen stimuleert trek)</span>
+        </div>
+
+        <div>
+            Zonsondergang:
+            <span id="sunset">-</span>
+            <span class="ideal">(trek start vaak ±30 min later)</span>
+        </div>
+
+        </div>
+
+
+        <div class="result">
+
+        <h2>
+            <span id="score">-</span>
+        </h2>
+
+        <p id="trekTime"></p>
+
+        </div>
+
+    </div>
+
+
+    <div class="card forecast">
+
+        <h2>Verwachting komende dagen</h2>
+
+        <div id="forecastList" class="forecastList"></div>
+
+    </div>
+
+
+    <div id="generalInfo" class="card">
+
+        <h2>Over paddentrek</h2>
+
+        <p>
+        Het paddentrekseizoen vindt meestal plaats tussen februari en april.
+        Wanneer de temperatuur na de winter weer stijgt, worden padden actief
+        en trekken ze naar hun voortplantingswateren.
+        </p>
+
+        <p>
+        De trek vindt vooral plaats in de avond en nacht, vaak rond of na
+        zonsondergang. Vochtige omstandigheden, milde temperaturen en lichte
+        regen vergroten de kans dat padden massaal in beweging komen.
+        </p>
+
+        <p>
+        Meestal vertrekken de mannetjes als eerste omdat zij sneller opwarmen.
+        De vrouwtjes volgen later. Op warme en natte avonden kan de trek
+        plotseling sterk toenemen.
+        </p>
+
+    </div>
+
+    </div>
+    <div class="app">
+        
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

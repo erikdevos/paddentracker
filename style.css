@@ -1,0 +1,188 @@
+body {
+	font-family: system-ui, sans-serif;
+	background: #0f172a;
+	color: white;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: auto;
+	min-height: 100vh;
+	line-height: 1.5;
+}
+
+.app {
+	width: 100%;
+	max-width: 380px;
+	gap: 1rem;
+	display: flex;
+	flex-direction: column;
+	padding-bottom: 3rem;
+}
+
+h1 {
+	text-align: center;
+	margin-bottom: 0;
+}
+
+h2 {
+	margin-top: 0;
+	margin-bottom: 1rem;
+}
+
+.location {
+	display: flex;
+	gap: 8px;
+	align-items: center;
+}
+
+input {
+	flex: 1;
+	padding: 8px;
+	border-radius: 6px;
+	border: none;
+}
+
+button.btn {
+	padding: 8px 10px;
+	border: none;
+	border-radius: 6px;
+	cursor: pointer;
+	&.btn-primary {
+		background-color: green;
+		color: white;
+	}
+}
+
+.card {
+	background: #1e293b;
+	padding: 25px;
+	border-radius: 12px;
+}
+
+.conditions {
+	margin-top: 15px;
+	line-height: 1.9;
+	font-size: 14px;
+}
+
+.dot {
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	display: inline-block;
+	margin-right: 6px;
+	background: #64748b;
+}
+
+.good {
+	background: #22c55e;
+}
+.ok {
+	background: #f59e0b;
+}
+.bad {
+	background: #ef4444;
+}
+
+.ideal {
+	color: #94a3b8;
+	font-size: 12px;
+	margin-left: 6px;
+}
+
+.result {
+	margin-top: 1rem;
+	text-align: center;
+	h2 {
+		outline: solid 1px white;
+		line-height: 1;
+		border-radius: 10px;
+		display: inline-block;
+		padding-left: 1.5rem;
+		padding-right: 1.5rem;
+		padding-top: 0.7rem;
+		padding-bottom: 0.7rem;
+		margin-bottom: 0;
+	}
+}
+
+#score {
+	font-size: 1.5rem;
+}
+
+.forecastRow {
+	display: flex;
+	justify-content: space-between;
+	padding: 6px 0;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.forecastDay {
+	text-transform: capitalize;
+}
+
+.forecastScore {
+	font-weight: bold;
+}
+
+.forecastRow {
+	display: flex;
+	justify-content: space-between;
+	padding: 8px 10px;
+	border-radius: 6px;
+	margin-bottom: 6px;
+	font-weight: 500;
+}
+
+.forecast-good {
+	background: #14532d;
+	color: #86efac;
+}
+
+.forecast-ok {
+	background: #78350f;
+	color: #fbbf24;
+}
+
+.forecast-bad {
+	background: #7f1d1d;
+	color: #fca5a5;
+}
+
+.visually-hidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+.searchWrapper {
+	position: relative;
+	flex: 1;
+}
+
+.suggestions {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	right: 0;
+	background: #1e293b;
+	border-radius: 6px;
+	margin-top: 4px;
+	z-index: 10;
+	overflow: hidden;
+}
+
+.suggestion {
+	padding: 8px 10px;
+	cursor: pointer;
+}
+
+.suggestion:hover {
+	background: #334155;
+}
