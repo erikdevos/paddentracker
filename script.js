@@ -455,7 +455,7 @@ function renderForecast(weather) {
 UI UPDATE
 ----------------------------- */
 
-function updateUI(weather, place) {
+function updateUI(weather, place, locationData = null) {
 
     const evening = getEveningWeather(weather);
 
@@ -495,8 +495,15 @@ function updateUI(weather, place) {
             "Start rond " + time.start + " (piek " + time.peak + ")";
     }
 
-    document.getElementById("status").textContent =
-        "Live weerdata voor " + place;
+    // Update status with location info
+    let statusText = "Live weerdata voor " + place;
+    if (locationData) {
+        const locationInfo = getLocationDisplay(locationData);
+        if (locationInfo !== place) {
+            statusText = "Live weerdata voor " + locationInfo;
+        }
+    }
+    document.getElementById("status").textContent = statusText;
 
     scheduleNotification(score, sunset);
 
@@ -509,7 +516,7 @@ function updateUI(weather, place) {
 WEER LADEN (FIX)
 ----------------------------- */
 
-async function loadWeather(lat, lon, place) {
+async function loadWeather(lat, lon, place, locationData = null) {
 
     document.getElementById("status").textContent = "Weerdata ophalen...";
 
@@ -517,7 +524,7 @@ async function loadWeather(lat, lon, place) {
 
         const weather = await getWeather(lat, lon);
 
-        updateUI(weather, place);
+        updateUI(weather, place, locationData);
 
     } catch (err) {
 
@@ -567,12 +574,24 @@ function getMyLocation() {
             const lon = pos.coords.longitude;
 
             const place = await reverseGeocode(lat, lon);
+            
+            // Get location data for province/country info
+            let locationData = null;
+            try {
+                const geoResults = await geocode(place);
+                locationData = geoResults.find(result => 
+                    Math.abs(result.latitude - lat) < 0.1 && 
+                    Math.abs(result.longitude - lon) < 0.1
+                ) || geoResults[0];
+            } catch (error) {
+                // If geocoding fails, use basic place name
+            }
 
             document.getElementById("placeInput").value = place;
 
             saveLocation(place, lat, lon);
 
-            loadWeather(lat, lon, place);
+            loadWeather(lat, lon, place, locationData);
 
         }
 
@@ -650,16 +669,18 @@ function showSuggestions(results) {
     
     if (!results || results.length === 0) {
         suggestionsDiv.style.display = "none";
+        suggestionsDiv.classList.remove("visible");
         return;
     }
 
-    // Filter duplicates by name, keeping the first occurrence
+    // Filter duplicates by name + province/country, keeping the first occurrence
     const uniqueResults = [];
-    const seenNames = new Set();
+    const seenKeys = new Set();
     
     results.forEach(result => {
-        if (!seenNames.has(result.name)) {
-            seenNames.add(result.name);
+        const key = result.name + "|" + (result.admin1 || "") + "|" + (result.country_code || "");
+        if (!seenKeys.has(key)) {
+            seenKeys.add(key);
             uniqueResults.push(result);
         }
     });
@@ -674,19 +695,23 @@ function showSuggestions(results) {
         suggestion.onclick = function() {
             document.getElementById("placeInput").value = result.name;
             suggestionsDiv.style.display = "none";
+            suggestionsDiv.classList.remove("visible");
             
             saveLocation(result.name, result.latitude, result.longitude);
-            loadWeather(result.latitude, result.longitude, result.name);
+            loadWeather(result.latitude, result.longitude, result.name, result);
         };
         
         suggestionsDiv.appendChild(suggestion);
     });
     
     suggestionsDiv.style.display = "block";
+    suggestionsDiv.classList.add("visible");
 }
 
 function hideSuggestions() {
-    document.getElementById("suggestions").style.display = "none";
+    const suggestionsDiv = document.getElementById("suggestions");
+    suggestionsDiv.style.display = "none";
+    suggestionsDiv.classList.remove("visible");
 }
 
 let debounceTimer;
@@ -724,7 +749,7 @@ document.getElementById("locationForm").onsubmit = async function(e) {
 
     saveLocation(geo.name, geo.latitude, geo.longitude);
 
-    loadWeather(geo.latitude, geo.longitude, geo.name);
+    loadWeather(geo.latitude, geo.longitude, geo.name, geo);
 };
 
 document.getElementById("searchBtn").onclick = async function() {
@@ -739,7 +764,7 @@ document.getElementById("searchBtn").onclick = async function() {
 
     saveLocation(geo.name, geo.latitude, geo.longitude);
 
-    loadWeather(geo.latitude, geo.longitude, geo.name);
+    loadWeather(geo.latitude, geo.longitude, geo.name, geo);
 
 };
 
@@ -766,7 +791,19 @@ window.onload = function() {
 
         document.getElementById("placeInput").value = saved.place;
 
-        loadWeather(saved.lat, saved.lon, saved.place);
+        // Get location data for saved location
+        let locationData = null;
+        geocode(saved.place).then(results => {
+            locationData = results.find(result => 
+                Math.abs(result.latitude - saved.lat) < 0.1 && 
+                Math.abs(result.longitude - saved.lon) < 0.1
+            ) || results[0];
+            
+            loadWeather(saved.lat, saved.lon, saved.place, locationData);
+        }).catch(() => {
+            // If geocoding fails, load without location data
+            loadWeather(saved.lat, saved.lon, saved.place);
+        });
 
     } else {
 
