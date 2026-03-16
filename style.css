@@ -22,11 +22,11 @@ body {
     --color-dot-bad: #ef4444;
     --color-text-ideal: #94a3b8;
     --color-bg-forecast-good: #14532d;
-    --color-text-forecast-good: #86efac;
+    --color-text-forecast-good: white;
     --color-bg-forecast-ok: #78350f;
-    --color-text-forecast-ok: #fbbf24;
+    --color-text-forecast-ok: white;
     --color-bg-forecast-bad: #7f1d1d;
-    --color-text-forecast-bad: #fca5a5;
+    --color-text-forecast-bad: white;
     --color-bg-suggestion-hover: #334155;
 }
 
@@ -39,23 +39,21 @@ body {
 	padding-bottom: 3rem;
     padding-left: 1rem;
     padding-right: 1rem;
-    @media (max-width: 480px) {
-        padding-left: 0.5rem;
-        padding-right: 0.5rem;
-        gap: 1rem;
-    }
 }
 
 h1 {
-    font-size: 1.5rem;
+    font-size: 1.7rem;
 	text-align: center;
-	margin-bottom: 0;
+	margin-bottom: 1rem;
 }
 
 h2 {
     font-size: 1.3rem;
 	margin-top: 0;
 	margin-bottom: 1rem;
+    @media (max-width: 480px) {
+        font-size: 1.1rem;
+    }
 }
 
 .location {
@@ -105,7 +103,6 @@ button.btn {
     display: grid;
     gap: 0.8rem;
 	margin-top: 1rem;
-    margin-bottom: 2rem;
 	font-size: 0.8rem;
 }
 
@@ -135,7 +132,7 @@ button.btn {
 }
 
 .result {
-	margin-top: 1rem;
+	margin-bottom: 2rem;
 	text-align: center;
 	h2 {
 		outline: solid 1px white;
@@ -148,10 +145,6 @@ button.btn {
 		padding-bottom: 0.7rem;
 		margin-bottom: 0;
 	}
-}
-
-#score {
-	font-size: 1.5rem;
 }
 
 .forecastRow {
@@ -181,16 +174,25 @@ button.btn {
 .forecast-good {
 	background: var(--color-bg-forecast-good);
 	color: var(--color-text-forecast-good);
+    span {
+        color: inherit;
+    }
 }
 
 .forecast-ok {
 	background: var(--color-bg-forecast-ok);
 	color: var(--color-text-forecast-ok);
+    span {
+        color: inherit;
+    }
 }
 
 .forecast-bad {
 	background: var(--color-bg-forecast-bad);
 	color: var(--color-text-forecast-bad);
+    span {
+        color: inherit;
+    }
 }
 
 

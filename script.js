@@ -59,7 +59,7 @@ async function getWeather(lat, lon) {
     const url =
         "https://api.open-meteo.com/v1/forecast?latitude=" + lat +
         "&longitude=" + lon +
-        "&hourly=temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,wind_speed_10m" +
+        "&hourly=temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,wind_speed_10m,soil_temperature_0cm,soil_moisture_0_1cm" +
         "&daily=sunset,temperature_2m_min" +
         "&timezone=auto";
 
@@ -110,7 +110,9 @@ function getEveningWeather(weather) {
         feels: weather.hourly.apparent_temperature[idx],
         humidity: weather.hourly.relative_humidity_2m[idx],
         rain: weather.hourly.precipitation[idx],
-        wind: weather.hourly.wind_speed_10m[idx]
+        wind: weather.hourly.wind_speed_10m[idx],
+        soilTemp: weather.hourly.soil_temperature_0cm[idx],
+        soilMoisture: weather.hourly.soil_moisture_0_1cm[idx]
 
     };
 
@@ -179,6 +181,25 @@ function normalizeRain(r) {
 
 }
 
+function normalizeSoilTemp(t) {
+    if (t < 5) return 0;
+    if (t < 7) return 0.3;
+    if (t < 9) return 0.6;
+    if (t <= 13) return 1;
+    if (t <= 16) return 0.7;
+
+    return 0.4;
+}
+
+function normalizeSoilMoisture(m) {
+    if (m < 0.2) return 0.2;
+    if (m < 0.3) return 0.4;
+    if (m < 0.5) return 0.8;
+    if (m < 0.7) return 1;
+
+    return 0.9;
+}
+
 function normalizeWind(w) {
 
     if (w > 35) return 0;
@@ -227,12 +248,14 @@ function paddentrekScore(weather, evening) {
 
     let score = 0;
 
-    score += normalizeTemp(evening.feels) * 35;
-    score += normalizeHumidity(evening.humidity) * 20;
-    score += normalizeRain(evening.rain) * 15;
-    score += normalizeTrend(trend) * 10;
-    score += normalizeWind(evening.wind) * 10;
-    score += normalizeRecentRain(recentRain) * 10;
+    score += normalizeTemp(evening.feels) * 25;
+    score += normalizeHumidity(evening.humidity) * 15;
+    score += normalizeRain(evening.rain) * 10;
+    score += normalizeTrend(trend) * 8;
+    score += normalizeWind(evening.wind) * 8;
+    score += normalizeRecentRain(recentRain) * 8;
+    score += normalizeSoilTemp(evening.soilTemp) * 16;
+    score += normalizeSoilMoisture(evening.soilMoisture) * 10;
 
     return Math.round(score);
 
@@ -381,7 +404,9 @@ function calculateDayScore(weather, day) {
         feels: weather.hourly.apparent_temperature[idx],
         humidity: weather.hourly.relative_humidity_2m[idx],
         rain: weather.hourly.precipitation[idx],
-        wind: weather.hourly.wind_speed_10m[idx]
+        wind: weather.hourly.wind_speed_10m[idx],
+        soilTemp: weather.hourly.soil_temperature_0cm[idx],
+        soilMoisture: weather.hourly.soil_moisture_0_1cm[idx]
 
     };
 
@@ -440,6 +465,8 @@ function updateUI(weather, place) {
     document.getElementById("feels").textContent = evening.feels + "°C";
     document.getElementById("humidity").textContent = evening.humidity + "%";
     document.getElementById("rain").textContent = evening.rain + " mm";
+    document.getElementById("soilTemp").textContent = evening.soilTemp + "°C";
+    document.getElementById("soilMoisture").textContent = Math.round(evening.soilMoisture * 100) + "%";
 
     document.getElementById("sunset").textContent =
         new Date(sunset).toLocaleTimeString([], {
@@ -451,15 +478,22 @@ function updateUI(weather, place) {
     setDot("feelsDot", evening.feels >= 8 ? "good" : "ok");
     setDot("humidityDot", evening.humidity >= 80 ? "good" : "ok");
     setDot("rainDot", evening.rain > 0 ? "good" : "ok");
+    setDot("soilTempDot", evening.soilTemp >= 9 && evening.soilTemp <= 13 ? "good" : "ok");
+    setDot("soilMoistureDot", evening.soilMoisture >= 0.3 && evening.soilMoisture <= 0.7 ? "good" : "ok");
 
     const score = paddentrekScore(weather, evening);
 
     const time = trekTime(sunset);
 
-    document.getElementById("score").textContent = "vandaag " + score + "% kans";
+    document.getElementById("score").textContent = score === 0 ? "vandaag geen kans" : "vandaag " + score + "% kans";
 
-    document.getElementById("trekTime").textContent =
-        "Start rond " + time.start + " (piek " + time.peak + ")";
+    const trekTimeElement = document.getElementById("trekTime");
+    if (score === 0) {
+        trekTimeElement.textContent = "";
+    } else {
+        trekTimeElement.textContent =
+            "Start rond " + time.start + " (piek " + time.peak + ")";
+    }
 
     document.getElementById("status").textContent =
         "Live weerdata voor " + place;

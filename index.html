@@ -36,10 +36,16 @@
 
     <div class="card">
 
+        <div class="result">
+            <h2>
+                <span id="score">-</span>
+            </h2>
+            <p id="trekTime"></p>
+        </div>
+
         <div id="status" aria-live="polite">
         Locatie ophalen...
         </div>
-
 
         <div class="conditions">
             <div>
@@ -71,21 +77,24 @@
             </div>
 
             <div>
+                <span id="soilTempDot" class="dot"></span>
+                Grondtemperatuur:
+                <span id="soilTemp">-</span>
+                <span class="ideal">(Ideaal: 9–13°C)</span>
+            </div>
+
+            <div>
+                <span id="soilMoistureDot" class="dot"></span>
+                Grondvocht:
+                <span id="soilMoisture">-</span>
+                <span class="ideal">(Ideaal: 30–70%)</span>
+            </div>
+
+            <div>
                 Zonsondergang:
                 <span id="sunset">-</span>
                 <span class="ideal">(trek start vaak ±30 min later)</span>
             </div>
-        </div>
-
-
-        <div class="result">
-
-        <h2>
-            <span id="score">-</span>
-        </h2>
-
-        <p id="trekTime"></p>
-
         </div>
 
     </div>
