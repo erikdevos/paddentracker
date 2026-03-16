@@ -1,7 +1,8 @@
 body {
+    margin: 0 auto;
 	font-family: system-ui, sans-serif;
-	background: #0f172a;
-	color: white;
+	background: var(--color-bg-primary);
+	color: var(--color-text-primary);
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -10,40 +11,78 @@ body {
 	line-height: 1.5;
 }
 
+:root {
+    --color-bg-primary: #0f172a;
+    --color-text-primary: white;
+    --color-bg-card: #1e293b;
+    --color-bg-suggestions: #1e293b;
+    --color-dot-default: #64748b;
+    --color-dot-good: #22c55e;
+    --color-dot-ok: #f59e0b;
+    --color-dot-bad: #ef4444;
+    --color-text-ideal: #94a3b8;
+    --color-bg-forecast-good: #14532d;
+    --color-text-forecast-good: #86efac;
+    --color-bg-forecast-ok: #78350f;
+    --color-text-forecast-ok: #fbbf24;
+    --color-bg-forecast-bad: #7f1d1d;
+    --color-text-forecast-bad: #fca5a5;
+    --color-bg-suggestion-hover: #334155;
+}
+
 .app {
 	width: 100%;
-	max-width: 380px;
-	gap: 1rem;
+	max-width: 480px;
+	gap: 1.5rem;
 	display: flex;
 	flex-direction: column;
 	padding-bottom: 3rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    @media (max-width: 480px) {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+        gap: 1rem;
+    }
 }
 
 h1 {
+    font-size: 1.5rem;
 	text-align: center;
 	margin-bottom: 0;
 }
 
 h2 {
+    font-size: 1.3rem;
 	margin-top: 0;
 	margin-bottom: 1rem;
 }
 
 .location {
 	display: flex;
-	gap: 8px;
+	gap: 0.5rem;
 	align-items: center;
 }
 
 input {
 	flex: 1;
-	padding: 8px;
+	min-width: 0;
 	border-radius: 6px;
 	border: none;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    display: inline-block;
+    font-size: 1.1rem;
 }
 
 button.btn {
-	padding: 8px 10px;
+    padding-left: 0.8rem;
+    padding-right: 0.8rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    font-size: 1.1rem;
 	border: none;
 	border-radius: 6px;
 	cursor: pointer;
@@ -54,15 +93,20 @@ button.btn {
 }
 
 .card {
-	background: #1e293b;
-	padding: 25px;
+	background: var(--color-bg-card);
+	padding: 2rem;
 	border-radius: 12px;
+    @media (max-width: 480px) {
+        padding: 1rem;
+    }
 }
 
 .conditions {
-	margin-top: 15px;
-	line-height: 1.9;
-	font-size: 14px;
+    display: grid;
+    gap: 0.8rem;
+	margin-top: 1rem;
+    margin-bottom: 2rem;
+	font-size: 0.8rem;
 }
 
 .dot {
@@ -71,21 +115,21 @@ button.btn {
 	border-radius: 50%;
 	display: inline-block;
 	margin-right: 6px;
-	background: #64748b;
+	background: var(--color-dot-default);
 }
 
 .good {
-	background: #22c55e;
+	background: var(--color-dot-good);
 }
 .ok {
-	background: #f59e0b;
+	background: var(--color-dot-ok);
 }
 .bad {
-	background: #ef4444;
+	background: var(--color-dot-bad);
 }
 
 .ideal {
-	color: #94a3b8;
+	color: var(--color-text-ideal);
 	font-size: 12px;
 	margin-left: 6px;
 }
@@ -135,35 +179,33 @@ button.btn {
 }
 
 .forecast-good {
-	background: #14532d;
-	color: #86efac;
+	background: var(--color-bg-forecast-good);
+	color: var(--color-text-forecast-good);
 }
 
 .forecast-ok {
-	background: #78350f;
-	color: #fbbf24;
+	background: var(--color-bg-forecast-ok);
+	color: var(--color-text-forecast-ok);
 }
 
 .forecast-bad {
-	background: #7f1d1d;
-	color: #fca5a5;
+	background: var(--color-bg-forecast-bad);
+	color: var(--color-text-forecast-bad);
 }
 
-.visually-hidden {
-	position: absolute;
-	width: 1px;
-	height: 1px;
-	padding: 0;
-	margin: -1px;
-	overflow: hidden;
-	clip: rect(0, 0, 0, 0);
-	white-space: nowrap;
-	border: 0;
-}
 
-.searchWrapper {
+.search-wrapper {
+    display: flex;
 	position: relative;
+	width: auto;
+    outline: solid 1px purple;
+}
+
+.search-wrapper input {
 	flex: 1;
+	min-width: 0;
+    outline: solid 1px green;
+    width: 100%;
 }
 
 .suggestions {
@@ -171,7 +213,7 @@ button.btn {
 	top: 100%;
 	left: 0;
 	right: 0;
-	background: #1e293b;
+	background: var(--color-bg-suggestions);
 	border-radius: 6px;
 	margin-top: 4px;
 	z-index: 10;
@@ -184,5 +226,5 @@ button.btn {
 }
 
 .suggestion:hover {
-	background: #334155;
+	background: var(--color-bg-suggestion-hover);
 }
