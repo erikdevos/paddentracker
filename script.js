@@ -438,11 +438,11 @@ function renderForecast(weather) {
 
         const row = document.createElement("div");
 
-        row.className = "forecastRow " + forecastClass(score);
+        row.className = "forecastRow";
 
         row.innerHTML =
-            "<span>" + getDayName(weather.daily.time[i]) + "</span>" +
-            "<span>" + score + "%</span>";
+            "<span class=\"forecastDay\">" + getDayName(weather.daily.time[i]) + "</span>" +
+            "<span class=\"forecastScore " + forecastClass(score) + "\">" + score + "%</span>";
 
         container.appendChild(row);
 

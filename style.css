@@ -22,11 +22,11 @@ body {
     --color-dot-ok: #f59e0b;
     --color-dot-bad: #ef4444;
     --color-text-ideal: #94a3b8;
-    --color-bg-forecast-good: #14532d;
+    --color-bg-forecast-good: #145e32;
     --color-text-forecast-good: white;
-    --color-bg-forecast-ok: #78350f;
+    --color-bg-forecast-ok: #b95c24;
     --color-text-forecast-ok: white;
-    --color-bg-forecast-bad: #7f1d1d;
+    --color-bg-forecast-bad: #982525;
     --color-text-forecast-bad: white;
     --color-bg-suggestion-hover: #334155;
 }
@@ -130,14 +130,25 @@ button.btn {
     @media (max-width: 480px) {
         gap: 0.5rem;
     }
+    > div {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .ideal {
+        color: var(--color-text-ideal);
+        font-size: 0.8rem;
+        margin-left: auto;
+    }
 }
 
 .dot {
-	width: 10px;
-	height: 10px;
+	width: 0.8rem;
+	height: 0.8rem;
 	border-radius: 50%;
 	display: inline-block;
-	margin-right: 6px;
+    margin-right: 0.5rem;
 	background: var(--color-dot-default);
 
     &.good {
@@ -148,11 +159,6 @@ button.btn {
     }
     &.bad {
         background: var(--color-dot-bad);
-    }
-    &.ideal {
-        color: var(--color-text-ideal);
-        font-size: 12px;
-        margin-left: 6px;
     }
 }
 
@@ -175,12 +181,16 @@ button.btn {
 .forecastRow {
 	display: flex;
 	justify-content: space-between;
-	border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 8px 10px;
-	border-radius: 6px;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
     font-size: 0.9rem;
+    .forecastScore {
+        padding: 0.2rem 0.5rem;
+        border-radius: 6px;
+    }
 
-    &.forecast-good {
+    .forecast-good {
         background: var(--color-bg-forecast-good);
         color: var(--color-text-forecast-good);
         span {
@@ -188,7 +198,7 @@ button.btn {
         }
     }
 
-    &.forecast-ok {
+    .forecast-ok {
         background: var(--color-bg-forecast-ok);
         color: var(--color-text-forecast-ok);
         span {
@@ -196,7 +206,7 @@ button.btn {
         }
     }
 
-    &.forecast-bad {
+    .forecast-bad {
         background: var(--color-bg-forecast-bad);
         color: var(--color-text-forecast-bad);
         span {
@@ -256,8 +266,8 @@ button.btn {
 }
 
 .forecastList {
- display: grid;
- gap: 0.7rem;
+    display: grid;
+    gap: 0.7rem;
 }
 
 .cards-container {
