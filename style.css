@@ -95,7 +95,7 @@ button.btn {
 	padding: 2rem;
 	border-radius: 12px;
     @media (max-width: 480px) {
-        padding: 1rem;
+        padding: 1.5rem;
     }
 }
 
@@ -167,7 +167,6 @@ button.btn {
 	justify-content: space-between;
 	padding: 8px 10px;
 	border-radius: 6px;
-	margin-bottom: 6px;
 	font-weight: 500;
 }
 
@@ -229,4 +228,9 @@ button.btn {
 
 .suggestion:hover {
 	background: var(--color-bg-suggestion-hover);
+}
+
+.forecastList {
+ display: grid;
+ gap: 0.5rem;
 }

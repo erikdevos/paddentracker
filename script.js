@@ -600,6 +600,22 @@ async function geocode(place) {
 }
 
 
+document.getElementById("locationForm").onsubmit = async function(e) {
+    e.preventDefault();
+    
+    const place = document.getElementById("placeInput").value;
+
+    if (!place) return;
+
+    const geo = await geocode(place);
+
+    document.getElementById("placeInput").value = geo.name;
+
+    saveLocation(geo.name, geo.latitude, geo.longitude);
+
+    loadWeather(geo.latitude, geo.longitude, geo.name);
+};
+
 document.getElementById("searchBtn").onclick = async function() {
 
     const place = document.getElementById("placeInput").value;
