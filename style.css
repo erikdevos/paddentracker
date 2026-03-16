@@ -4,11 +4,12 @@ body {
 	background: var(--color-bg-primary);
 	color: var(--color-text-primary);
 	display: flex;
+    flex-direction: column;
 	justify-content: center;
 	align-items: center;
 	height: auto;
 	min-height: 100vh;
-	line-height: 1.5;
+	line-height: 1.6;
 }
 
 :root {
@@ -31,20 +32,35 @@ body {
 }
 
 .app {
-	width: 100%;
-	max-width: 480px;
+	width: auto;
+	max-width: 1000px;
 	gap: 1.5rem;
 	display: flex;
 	flex-direction: column;
-	padding-bottom: 3rem;
+	padding-bottom: 2rem;
     padding-left: 1rem;
     padding-right: 1rem;
+    @media (max-width: 480px) {
+       max-width: 480px;
+    }
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
 }
 
 h1 {
     font-size: 1.7rem;
 	text-align: center;
-	margin-bottom: 1rem;
+	margin-bottom: 0.5rem;
 }
 
 h2 {
@@ -67,19 +83,23 @@ input {
 	min-width: 0;
 	border-radius: 6px;
 	border: none;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 0.7rem;
+    padding-bottom: 0.7rem;
     display: inline-block;
     font-size: 1.1rem;
+    @media (max-width: 480px) {
+        padding-left: 0.8rem;
+        padding-right: 0.8rem;
+    }
 }
 
 button.btn {
-    padding-left: 0.8rem;
-    padding-right: 0.8rem;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 0.7rem;
+    padding-bottom: 0.7rem;
     font-size: 1.1rem;
 	border: none;
 	border-radius: 6px;
@@ -87,6 +107,9 @@ button.btn {
 	&.btn-primary {
 		background-color: green;
 		color: white;
+        &:hover {
+            background-color: #166534;
+        }
 	}
 }
 
@@ -104,6 +127,9 @@ button.btn {
     gap: 0.8rem;
 	margin-top: 1rem;
 	font-size: 0.8rem;
+    @media (max-width: 480px) {
+        gap: 0.5rem;
+    }
 }
 
 .dot {
@@ -113,22 +139,21 @@ button.btn {
 	display: inline-block;
 	margin-right: 6px;
 	background: var(--color-dot-default);
-}
 
-.good {
-	background: var(--color-dot-good);
-}
-.ok {
-	background: var(--color-dot-ok);
-}
-.bad {
-	background: var(--color-dot-bad);
-}
-
-.ideal {
-	color: var(--color-text-ideal);
-	font-size: 12px;
-	margin-left: 6px;
+    &.good {
+        background: var(--color-dot-good);
+    }
+    &.ok {
+        background: var(--color-dot-ok);
+    }
+    &.bad {
+        background: var(--color-dot-bad);
+    }
+    &.ideal {
+        color: var(--color-text-ideal);
+        font-size: 12px;
+        margin-left: 6px;
+    }
 }
 
 .result {
@@ -150,61 +175,53 @@ button.btn {
 .forecastRow {
 	display: flex;
 	justify-content: space-between;
-	padding: 6px 0;
 	border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.forecastDay {
-	text-transform: capitalize;
-}
-
-.forecastScore {
-	font-weight: bold;
-}
-
-.forecastRow {
-	display: flex;
-	justify-content: space-between;
-	padding: 8px 10px;
+    padding: 8px 10px;
 	border-radius: 6px;
-	font-weight: 500;
-}
+    font-size: 0.9rem;
 
-.forecast-good {
-	background: var(--color-bg-forecast-good);
-	color: var(--color-text-forecast-good);
-    span {
-        color: inherit;
+    &.forecast-good {
+        background: var(--color-bg-forecast-good);
+        color: var(--color-text-forecast-good);
+        span {
+            color: inherit;
+        }
+    }
+
+    &.forecast-ok {
+        background: var(--color-bg-forecast-ok);
+        color: var(--color-text-forecast-ok);
+        span {
+            color: inherit;
+        }
+    }
+
+    &.forecast-bad {
+        background: var(--color-bg-forecast-bad);
+        color: var(--color-text-forecast-bad);
+        span {
+            color: inherit;
+        }
+    }
+
+    .forecastDay {
+        text-transform: capitalize;
+    }
+
+    .forecastScore {
+        font-weight: bold;
     }
 }
-
-.forecast-ok {
-	background: var(--color-bg-forecast-ok);
-	color: var(--color-text-forecast-ok);
-    span {
-        color: inherit;
-    }
-}
-
-.forecast-bad {
-	background: var(--color-bg-forecast-bad);
-	color: var(--color-text-forecast-bad);
-    span {
-        color: inherit;
-    }
-}
-
 
 .search-wrapper {
     display: flex;
 	position: relative;
 	width: auto;
-}
-
-.search-wrapper input {
-	flex: 1;
-	min-width: 0;
-    width: 100%;
+    input {
+        flex: 1;
+        min-width: 0;
+        width: 100%;
+    }
 }
 
 .suggestions {
@@ -217,22 +234,64 @@ button.btn {
 	margin-top: 4px;
 	z-index: 10;
 	overflow: hidden;
+    &.visible {
+        outline: solid 1px rgba(255, 255, 255, 0.2);
+    }
+
+    .suggestion {
+        padding: 8px 10px;
+        cursor: pointer;
+        &:hover {
+            background: var(--color-bg-suggestion-hover);
+        }
+    }
+
 }
 
-.suggestions.visible {
-    outline: solid 1px rgba(255, 255, 255, 0.2);
-}
-
-.suggestion {
-	padding: 8px 10px;
-	cursor: pointer;
-}
-
-.suggestion:hover {
-	background: var(--color-bg-suggestion-hover);
+.forecast {
+    align-self: stretch;
+    h2 {
+        margin-bottom: 1.5rem;
+    }
 }
 
 .forecastList {
  display: grid;
- gap: 0.5rem;
+ gap: 0.7rem;
+}
+
+.cards-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+    
+    @media (min-width: 768px) {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+    .card {
+        flex: 1;
+        min-width: 0;
+        &.forecast {
+            @media (min-width: 768px) {
+                min-width: 280px;
+            }
+        }
+    }
+}
+
+footer {
+    margin-top: auto;
+    padding: 1rem;
+    text-align: center;
+    color: var(--color-text-ideal);
+    font-size: 0.9rem;
+    a {
+        color: var(--color-text-ideal);
+        text-decoration: none;
+        &:hover {
+            text-decoration: underline;
+        }
+    }
 }
