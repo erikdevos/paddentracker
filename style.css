@@ -199,13 +199,11 @@ button.btn {
     display: flex;
 	position: relative;
 	width: auto;
-    outline: solid 1px purple;
 }
 
 .search-wrapper input {
 	flex: 1;
 	min-width: 0;
-    outline: solid 1px green;
     width: 100%;
 }
 
